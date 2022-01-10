@@ -1,0 +1,49 @@
+version: '3.6'
+services:
+
+  postgres:
+    image: postgres:13.1
+    restart: always
+    volumes:
+    - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+
+  hasura:
+    image: hasura/graphql-engine:v2.1.0
+    ports:
+    - "8080:8080"
+    depends_on:
+    - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: "postgres://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+      HASURA_GRAPHQL_DATABASE_URL: "postgres://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_LOG_LEVEL: debug
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
+      HASURA_GRAPHQL_JWT_SECRET: '{ "type": "RS256", "key": "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGSd+sSTss2uOuVJKpumpFAaml\nt1CWLMTAZNAabF71Ur0P6u833RhAIjXDSA/QeVitzvqvCZpNtbOJVegaREqLMJqv\nFOUkFdLNRP3f9XjYFFvubo09tcjX6oGEREKDqLG2MfZ2Z8LVzuJc6SwZMgVFk/63\nrdAOci3W9u3zOSGj4QIDAQAB\n-----END PUBLIC KEY-----\n" }'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: guest
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMINSECRET}
+
+  couper:
+    image: avenga/couper:1.6.0
+    restart: always
+    ports:
+    - "8099:8099"
+    environment:
+      COUPER_DEFAULT_PORT: 8099
+      COUPER_WATCH: "true"
+      HASURA_ORIGIN: http://hasura:8080
+      HASURA_ADMINSECRET: ${HASURA_ADMINSECRET}
+      JWT_KEY: 'testLOLkey123'
+    volumes:
+      - ./couper:/conf
+
+volumes:
+  db_data:
+
