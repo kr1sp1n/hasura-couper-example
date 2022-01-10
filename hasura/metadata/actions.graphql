@@ -1,0 +1,14 @@
+type Query {
+  login(
+    email: String!
+    password: String!
+  ): Credentials
+}
+
+type Credentials {
+  id: String!
+  email: String!
+  roles: [String!]!
+  access_token: String!
+}
+

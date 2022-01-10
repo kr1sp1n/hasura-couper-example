@@ -1,0 +1,12 @@
+actions:
+- name: login
+  definition:
+    kind: ""
+    handler: http://couper:8099/api/login
+  comment: user login
+custom_types:
+  enums: []
+  input_objects: []
+  objects:
+  - name: Credentials
+  scalars: []
