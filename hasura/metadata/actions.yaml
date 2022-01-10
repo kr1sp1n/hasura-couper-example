@@ -2,7 +2,7 @@ actions:
 - name: login
   definition:
     kind: ""
-    handler: http://couper:8099/api/login
+    handler: http://couper:8099/webhook/login
   comment: user login
 custom_types:
   enums: []

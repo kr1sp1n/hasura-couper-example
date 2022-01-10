@@ -9,7 +9,8 @@
     "export-seed": "hasura --project ./hasura --admin-secret adminSecret seed create 'init' --from-table users --from-table roles --from-table users_roles",
     "apply-metadata": "hasura --project ./hasura --admin-secret adminSecret metadata apply",
     "apply-migration": "hasura --project ./hasura --admin-secret adminSecret migrate apply",
-    "apply-seed": "hasura --project ./hasura --admin-secret adminSecret seed apply"
+    "apply-seed": "hasura --project ./hasura --admin-secret adminSecret seed apply",
+    "init": "npm run apply-migration; npm run apply-seed; npm run apply-metadata"
   },
   "author": "kr1sp1n",
   "license": "CC0-1.0",

@@ -1,6 +1,6 @@
 server {
   api {
-    base_path = "/api"
+    base_path = "/webhook"
     endpoint "/login" {
       request {
         backend "hasura" {}
@@ -29,6 +29,7 @@ server {
         status = backend_responses.default.status
         json_body = {
           id = backend_responses.default.json_body.data.check_password[0].id
+          lol = backend_responses.default.json_body.data 
           email = backend_responses.default.json_body.data.check_password[0].email
           roles = backend_responses.default.json_body.data.check_password[0].roles.*.role.name
           access_token = jwt_sign("hasura_jwt", {

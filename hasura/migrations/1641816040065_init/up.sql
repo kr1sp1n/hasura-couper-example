@@ -3,7 +3,8 @@ CREATE TABLE public.users (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     email text NOT NULL,
     password_hash text,
-    last_login_at timestamp with time zone
+    last_login_at timestamp with time zone,
+    password_changed boolean DEFAULT false
 );
 CREATE FUNCTION public.check_password(email text, password text) RETURNS SETOF public.users
     LANGUAGE sql STABLE
